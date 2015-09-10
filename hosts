@@ -1,2 +1,8 @@
-[webservers]
-testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+vagrant1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+vagrant2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+vagrant3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201
+
+[vagrant]
+vagrant1
+vagrant2
+vagrant3
