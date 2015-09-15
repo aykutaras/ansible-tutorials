@@ -1,7 +1,0 @@
-[all:vars]
-ntp_server=ntp.ubuntu.com
-
-[vagrant]
-vagrant1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200 color=green
-vagrant2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 color=purple
-vagrant3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201 color=orange
