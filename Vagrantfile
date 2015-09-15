@@ -1,11 +1,53 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
-Vagrant.configure(2) do |config|
-    config.vm.box = "hashicorp/precise64"
-    config.vm.network "private_network", ip: "192.168.33.10"
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Use the same key for each machine
+  config.ssh.insert_key = false
+
+  config.vm.define 'db' do |db|
+
+    # Every Vagrant virtual environment requires a box to build off of.
+    db.vm.box = "hashicorp/precise64"
+
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    db.vm.network "private_network", ip: "192.168.33.11"
+
+    # If true, then any SSH connections made will enable agent forwarding.
+    db.ssh.forward_agent = true
+
+    db.vm.provider "virtualbox" do |vb|
+      # Use VBoxManage to customize the VM. For example to change memory:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+  end
+
+  config.vm.define 'web' do |web|
+
+    # Every Vagrant virtual environment requires a box to build off of.
+    web.vm.box = "hashicorp/precise64"
+
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    web.vm.network "private_network", ip: "192.168.33.10"
+
+    # If true, then any SSH connections made will enable agent forwarding.
+    web.ssh.forward_agent = true
+
+    web.vm.provider "virtualbox" do |vb|
+      # Use VBoxManage to customize the VM. For example to change memory:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+
+    web.vm.provision "ansible" do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = "mezzanine-across-host.yml"
+    end
+
+  end
+
 end
