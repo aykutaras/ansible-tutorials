@@ -1,0 +1,9 @@
+---
+- name: create domain groups
+  group: name={{ item.user }}
+  with_items: domains
+  sudo: True
+- name: create domain users
+  user: name={{ item.user }} group={{ item.user }} password={{ item.pass }}
+  with_items: domains
+  sudo: True
