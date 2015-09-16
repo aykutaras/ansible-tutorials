@@ -1,0 +1,10 @@
+---
+- name: install mysql
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  sudo: True
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: create a test database
+  mysql_db: login_user=root login_password='' name=test state=present

@@ -1,0 +1,54 @@
+server {
+    listen 80 ;
+
+    {% if tls_enabled %}
+    listen 443 ssl;
+    {% endif %}
+
+    server_name {{ item }};
+    root {{ nginx_project_path}}/{{ nginx_project_root }};
+
+    {% if tls_enabled %}
+    ## SSL certificate
+    ssl_certificate /etc/pki/tls/ssl/certs/checkout.clearsettle.com/checkout.clearsettle.com.crt;
+    ssl_certificate_key /etc/pki/tls/ssl/private/checkout.clearsettle.com/checkout.clearsettle.com.key;
+    {% endif %}
+
+    ## Error logging
+    error_log {{ nginx_project_path }}/logs/{{ item }}.error.log;
+    log_not_found off;
+
+    ## Customisation include
+    include /etc/nginx/vhosts/{{ item }}.custom;
+ 
+    location / {
+        index index.html index.php; ## Allow a static html file to be shown first
+        try_files $uri $uri/ /index.php?$query_string;
+        expires 30d; ## Assume all files are cachable
+    }
+
+    ## Leverage browser caching
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           30d;
+    }
+
+
+    location  /. { ## Disable .htaccess and other hidden files
+        return 404;
+    }
+
+    location ~ .php$ { ## Execute PHP scripts
+        expires        off;
+        fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_param  SCRIPT_NAME      $fastcgi_script_name;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 16k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+        fastcgi_read_timeout 60s;
+        include        fastcgi_params;
+    }
+}

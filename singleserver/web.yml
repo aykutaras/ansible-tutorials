@@ -1,0 +1,7 @@
+---
+- name: deploy a php app
+  hosts: vagrant
+  roles:
+    - db
+    - phpfpm
+    - nginx

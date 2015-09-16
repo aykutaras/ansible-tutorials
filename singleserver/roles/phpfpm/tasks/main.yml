@@ -1,0 +1,7 @@
+---
+- name: install php5-fpm
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  sudo: True
+  with_items:
+    - php5-fpm
+    - php5-mysql
