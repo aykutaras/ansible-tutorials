@@ -1,2 +1,10 @@
 ---
-# vars file for phpfpm
+php_fpm_dir: "/etc/php5/fpm"
+
+php_project_names: 
+ - "192.168.33.10.xip.io"
+
+#/home/cscheckout/app/public
+php_project_path: "{{ ansible_env.HOME }}"
+php_project_user: "{{ ansible_ssh_user }}"
+php_project_root: "app/public"

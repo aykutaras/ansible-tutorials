@@ -2,6 +2,6 @@
 - name: deploy a php app
   hosts: vagrant
   roles:
-    - db
+  #    - db
     - phpfpm
     - nginx

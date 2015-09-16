@@ -1,7 +1,6 @@
 ---
 nginx_project_names: 
  - "192.168.33.10.xip.io"
- - "www.192.168.33.10.xip.io"
 
 #/home/cscheckout/app/public
 nginx_project_path: "{{ ansible_env.HOME }}"
