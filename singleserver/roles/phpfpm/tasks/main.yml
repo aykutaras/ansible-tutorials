@@ -39,3 +39,5 @@
 - name: touch error.log
   file: path={{ php_project_path }}/logs/php_error.log state=touch
   notify: restart php5
+- name: Create a dummy index file
+  template: src=index.php.j2 dest={{ php_project_path }}/{{ php_project_root }}/index.php
