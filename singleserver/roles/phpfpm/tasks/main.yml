@@ -26,18 +26,22 @@
   sudo: True
   notify: restart php5
 - name: set host configs
-  template: src=www.conf.j2 dest={{ php_fpm_dir }}/pool.d/{{ item }}.conf
-  with_items: php_project_names
+  template: src=www.conf.j2 dest={{ php_fpm_dir }}/pool.d/{{ item.name }}.conf
+  with_items: domains
   sudo: True
   notify: restart php5
 - name: create app dir
-  file: path={{ php_project_path }}/{{ php_project_root }} state=directory
+  file: path={{ item.path }} state=directory
+  with_items: domains
   notify: restart php5
 - name: create logs dir
-  file: path={{ php_project_path }}/logs/ state=directory
+  file: path={{ item.home }}/logs/ state=directory
+  with_items: domains
   notify: restart php5
 - name: touch error.log
-  file: path={{ php_project_path }}/logs/php_error.log state=touch
+  file: path={{ item.home }}/logs/php_error.log state=touch
+  with_items: domains
   notify: restart php5
 - name: Create a dummy index file
-  template: src=index.php.j2 dest={{ php_project_path }}/{{ php_project_root }}/index.php
+  template: src=index.php.j2 dest={{ item.path }}/index.php
+  with_items: domains

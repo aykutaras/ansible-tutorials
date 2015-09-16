@@ -38,19 +38,20 @@
   #sudo: True
 
 - name: set nginx site config files
-  template: src=host.conf.j2 dest=/etc/nginx/vhosts/{{ item }}.conf
-  with_items: nginx_project_names
+  template: src=host.conf.j2 dest=/etc/nginx/vhosts/{{ item.name }}.conf
+  with_items: domains
   notify: restart nginx
   sudo: True
 - name: touch custom nginx site config
-  file: path=/etc/nginx/vhosts/{{ item }}.custom state=touch
-  with_items: nginx_project_names
+  file: path=/etc/nginx/vhosts/{{ item.name }}.custom state=touch
+  with_items: domains
   notify: restart nginx
   sudo: True
 - name: create logs dir
-  file: path={{ nginx_project_path }}/logs/ state=directory
+  file: path={{ item.home }}/logs/ state=directory
+  with_items: domains
   notify: restart nginx
 - name: touch error.log
-  file: path={{ nginx_project_path }}/logs/{{ item }}.error.log state=touch
-  with_items: nginx_project_names
+  file: path={{ item.home }}/logs/{{ item.name }}.error.log state=touch
+  with_items: domains
   notify: restart nginx

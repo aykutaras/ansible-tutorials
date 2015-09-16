@@ -5,8 +5,8 @@ server {
     listen 443 ssl;
     {% endif %}
 
-    server_name {{ item }};
-    root {{ nginx_project_path}}/{{ nginx_project_root }};
+    server_name {{ item.name }};
+    root {{ item.path }};
 
     {% if tls_enabled %}
     ## SSL certificate
@@ -15,11 +15,11 @@ server {
     {% endif %}
 
     ## Error logging
-    error_log {{ nginx_project_path }}/logs/{{ item }}.error.log;
+    error_log {{ item.home }}/logs/{{ item.name }}.error.log;
     log_not_found off;
 
     ## Customisation include
-    include /etc/nginx/vhosts/{{ item }}.custom;
+    include /etc/nginx/vhosts/{{ item.name }}.custom;
  
     location / {
         index index.html index.php; ## Allow a static html file to be shown first

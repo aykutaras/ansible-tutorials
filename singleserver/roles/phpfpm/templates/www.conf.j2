@@ -1,5 +1,5 @@
 ; Start a new pool named 'checkout.clearsettle.com'.
-[{{ item }}]
+[{{ item.name }}]
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -36,9 +36,9 @@ listen.allowed_clients = 127.0.0.1
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
 ; RPM: apache Choosed to be able to access some dir as httpd
-user = {{ php_project_user }}
+user = {{ item.user }}
 ; RPM: Keep a group allowed to write in log dir.
-group = {{ php_project_user }}
+group = {{ item.user }}
 
 ; Choose how the process manager will control the number of child processes.
 ; Possible Values:
@@ -174,7 +174,7 @@ slowlog = /var/log/php-fpm/www-slow.log
  
 ; Chdir to this directory at the start. This value must be an absolute path.
 ; Default Value: current directory or / when chroot
-chdir = {{ php_project_path }}/{{ php_project_root }}
+chdir = {{ item.path }}
  
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
@@ -218,7 +218,7 @@ chdir = {{ php_project_path }}/{{ php_project_root }}
 ;php_flag[display_errors] = off
 
 ; Error logging
-php_admin_value[error_log] = {{ php_project_path }}/logs/php_error.log
+php_admin_value[error_log] = {{ item.home }}/logs/php_error.log
 php_admin_flag[log_errors] = on
 
 ; Performance settings

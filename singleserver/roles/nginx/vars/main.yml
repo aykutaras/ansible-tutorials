@@ -1,8 +1,2 @@
 ---
-nginx_project_names: 
- - "192.168.33.10.xip.io"
 
-#/home/cscheckout/app/public
-nginx_project_path: "{{ ansible_env.HOME }}"
-nginx_project_user: "{{ ansible_ssh_user }}"
-nginx_project_root: "app/public"

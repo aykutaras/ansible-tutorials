@@ -1,0 +1,6 @@
+---
+domains: 
+  - name: "192.168.33.10.xip.io"
+    home: "{{ ansible_env.HOME }}"
+    user: "{{ ansible_ssh_user }}"
+    path: "{{ ansible_env.HOME }}/app/public"
