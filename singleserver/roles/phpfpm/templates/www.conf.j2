@@ -57,7 +57,7 @@ group = {{ item.user }}
 ;                                    of 'idle' processes is greater than this
 ;                                    number then some children will be killed.
 ; Note: This value is mandatory.
-pm = static
+pm = dynamic
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes to be created when pm is set to 'dynamic'.
@@ -67,17 +67,17 @@ pm = static
 ; CGI.
 ; Note: Used when pm is set to either 'static' or 'dynamic'
 ; Note: This value is mandatory.
-pm.max_children = 6
+pm.max_children = 35
 
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = 5
+pm.start_servers = 3
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = 5
+pm.min_spare_servers = 3
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
@@ -148,7 +148,7 @@ request_terminate_timeout = 60
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-;request_slowlog_timeout = 0
+request_slowlog_timeout = 10s
  
 ; The log file for slow requests
 ; Default Value: not set
@@ -179,7 +179,7 @@ chdir = {{ item.path }}
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
 ; Default Value: no
-;catch_workers_output = yes
+catch_workers_output = yes
  
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit
