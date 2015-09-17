@@ -3,6 +3,6 @@
   hosts: vagrant
   roles:
     - common
-  #- db
+    - db
     - phpfpm
     - nginx

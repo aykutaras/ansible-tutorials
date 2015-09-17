@@ -1,10 +1,25 @@
 ---
-- name: install mysql
-  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+- name: install mariadb repository
+  apt_repository: repo='deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.1/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present
   sudo: True
+- name: add repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+  sudo: True
+- name: install mariadb
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
-    - mysql-server
+    - mariadb-server
     - python-mysqldb
-
+  sudo: True
+- name: set conf file
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+  sudo: True
+- name: restart db
+  service: name=mysql state=restarted
+  sudo: True
+- name: create default user
+  mysql_user: name=dummy host="%" password=dummer priv=*.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP state=present
+  sudo: True
 - name: create a test database
-  mysql_db: login_user=root login_password='' name=test state=present
+  mysql_db: login_user=dummy login_password=dummer name=test state=present
+  sudo: True
