@@ -11,7 +11,7 @@
  echo exec('hostname');
  Print  "</BR>";
 
-$link = mysqli_connect("127.0.0.1", "dummy", "dummer", "test");
+$link = mysqli_connect("127.0.0.1", "{{ item.user }}", "{{ item.pass }}", "{{ item.db }}");
 
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
@@ -20,7 +20,7 @@ if (!$link) {
     exit;
 }
 
-echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
+echo "Success: A proper connection to MySQL was made! The {{ item.db }} database is great." . PHP_EOL;
 echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
 
 mysqli_close($link);
