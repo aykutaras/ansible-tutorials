@@ -1,0 +1,8 @@
+---
+- name: deploy mariadb
+  hosts: db
+  roles:
+    - db
+    #    - common
+    #    - phpfpm
+    #    - nginx

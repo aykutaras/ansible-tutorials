@@ -1,0 +1,10 @@
+[db]
+db1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 server_id=1 repl_type=master
+db2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201 server_id=2 repl_type=slave
+db3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2202 server_id=3 repl_type=slave
+
+[web]
+web1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2203
+
+[nginx]
+nginx1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2204

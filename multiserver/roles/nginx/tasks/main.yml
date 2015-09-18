@@ -1,0 +1,58 @@
+---
+- name: ensure nginx to apt-key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  sudo: True
+- name: ensure nginx apt repository
+  apt_repository: repo="deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx"
+  sudo: True
+- name: install nginx
+  apt: pkg=nginx update_cache=yes cache_valid_time=3600
+  sudo: True
+- name: set nginx config file
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+  sudo: True
+- name: assure vhosts directory exists
+  file: path=/etc/nginx/vhosts state=directory
+  sudo: True
+- name: remove default nginx conf
+  file: path=/etc/nginx/sites-enabled/ state=absent
+  notify: restart nginx
+  sudo: True
+- name: remove nginx sites-available
+  file: path=/etc/nginx/sites-available/ state=absent
+  notify: restart nginx
+  sudo: True
+
+  #- name: assure rename of dpkg-dists
+  #command: cp /etc/nginx/{{ item }}.dpkg-dist /etc/nginx/{{ item }}
+  #with_items:
+  #  - fastcgi_params
+  #  - koi-utf
+  #  - koi-win
+  #  - mime.types
+  #  - scgi_params
+  #  - uwsgi_params
+  #  - win-utf
+  #notify: restart nginx
+  #sudo: True
+
+- name: set nginx site config files
+  template: src=host.conf.j2 dest=/etc/nginx/vhosts/{{ item.name }}.conf
+  with_items: domains
+  notify: restart nginx
+  sudo: True
+- name: touch custom nginx site config
+  file: path=/etc/nginx/vhosts/{{ item.name }}.custom state=touch
+  with_items: domains
+  notify: restart nginx
+  sudo: True
+- name: create logs dir
+  file: path={{ item.home }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
+  with_items: domains
+  notify: restart nginx
+- name: touch error.log
+  file: path={{ item.home }}/logs/{{ item.name }}.error.log owner={{ item.user }} group={{ item.user }} state=touch
+  with_items: domains
+  sudo: True
+  notify: restart nginx

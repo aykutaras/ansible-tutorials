@@ -1,0 +1,46 @@
+---
+- name: add repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+  sudo: True
+- name: install mariadb repository
+  apt_repository: repo='deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.1/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present
+  sudo: True
+- name: install mariadb
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - mariadb-server
+    - python-mysqldb
+  sudo: True
+- name: set conf file
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+  sudo: True
+- name: create replication account
+  mysql_user: name=repl host="%" password=lper priv="*.*:REPLICATION SLAVE" state=present
+  sudo: True
+- name: restart db
+  service: name=mysql state=restarted
+  sudo: True
+- name: create domain related databases
+  mysql_db: name={{ item.db }} state=present
+  with_items: databases
+  sudo: True
+- name: create domain related users
+  mysql_user: host="%" name={{ item.user }} password={{ item.pass }} priv={{ item.db }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP state=present
+  with_items: databases
+  sudo: True
+- name: reset master binlog
+  command: /usr/bin/mysql -u root -e "RESET MASTER"
+  when: repl_type == "master"
+  sudo: True
+- name: stop all slaves
+  command: /usr/bin/mysql -uroot -e "STOP ALL SLAVES"
+  when: repl_type == "slave"
+  sudo: True
+- name: Setup replication
+  command: /usr/bin/mysql -uroot -e "CHANGE MASTER TO master_host='192.168.33.10', master_user='repl', master_password='lper', master_use_gtid=current_pos"
+  when: repl_type == "slave"
+  sudo: True
+- name: start all slaves
+  command: /usr/bin/mysql -uroot -e "START ALL SLAVES"
+  when: repl_type == "slave"
+  sudo: True

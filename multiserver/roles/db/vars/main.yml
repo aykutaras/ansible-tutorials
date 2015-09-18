@@ -1,0 +1,11 @@
+---
+databases:
+  - db: "test1db"
+    user: "test1"
+    pass: "pass"
+  - db: "test2db"
+    user: "test2"
+    pass: "pass"
+  - db: "test3db"
+    user: "test3"
+    pass: "pass"

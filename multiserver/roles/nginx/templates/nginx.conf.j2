@@ -1,0 +1,88 @@
+#######################################################################
+#
+# This is the main Nginx configuration file.
+#
+# More information about the configuration options is available on
+#   * the English wiki - http://wiki.nginx.org/Main
+#   * the Russian documentation - http://sysoev.ru/nginx/
+#
+#######################################################################
+
+#----------------------------------------------------------------------
+# Main Module - directives that cover basic functionality
+#
+#   http://wiki.nginx.org/NginxHttpMainModule
+#
+#----------------------------------------------------------------------
+
+user              {{ ansible_ssh_user }};
+worker_processes  auto;
+
+pid        /var/run/nginx.pid;
+error_log  /var/log/nginx/error.log error;
+
+
+#----------------------------------------------------------------------
+# Events Module
+#
+#   http://wiki.nginx.org/NginxHttpEventsModule
+#
+#----------------------------------------------------------------------
+
+events {
+    worker_connections  1024 ;
+    multi_accept        on;
+    use                 epoll;
+}
+
+
+#----------------------------------------------------------------------
+# HTTP Core Module
+#
+#   http://wiki.nginx.org/NginxHttpCoreModule
+#
+#----------------------------------------------------------------------
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # Disable access logging (unnecessary IO)
+    access_log  off;
+
+    # Disable SSLv3 (PCI compliance)
+    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+
+    # Disable indexing (PCI compliance)
+    autoindex off;
+
+    # Disable server tokens (PCI compliance)
+    server_tokens off;
+
+    # TCP optimisations
+    sendfile    on;
+    tcp_nopush  on;
+    tcp_nodelay on;
+
+    # KeepAlive
+    keepalive_timeout  15;
+
+    # Compress static files
+    gzip  on;
+    gzip_vary on;
+    gzip_min_length 10240;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
+    gzip_disable "MSIE [1-6]\.";
+
+    # Enable large file uploads
+    client_max_body_size 32M;
+
+    # Load config files from the /etc/nginx/vhosts directory
+
+    include /etc/nginx/vhosts/*.conf;
+}

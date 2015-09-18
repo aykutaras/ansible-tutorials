@@ -1,0 +1,4 @@
+---
+php_fpm_dir: "/etc/php5/fpm"
+php_post_max_size: 32M
+php_upload_max_size: 32M

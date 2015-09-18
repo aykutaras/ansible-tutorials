@@ -1,0 +1,51 @@
+---
+- name: install php5
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  sudo: True
+  with_items:
+    - php5-fpm
+    - php5-gd
+    - php5-cli
+    - php5-curl
+    - php5-mongo
+    - php5-mysqlnd
+    - php5-intl
+    - php5-mcrypt
+- name: enable php5-encrypt
+  shell: php5enmod mcrypt
+  args:
+    creates: /etc/php5/cli/conf.d/20-mcrypt.ini
+  sudo: True
+  notify: restart php5
+- name: set php.ini
+  template: src=php.ini.j2 dest={{ php_fpm_dir }}/php.ini
+  sudo: True
+  notify: restart php5
+- name: set php-fpm-conf
+  template: src=php-fpm.conf.j2 dest={{ php_fpm_dir }}/php-fpm.conf
+  sudo: True
+  notify: restart php5
+- name: set host configs
+  template: src=www.conf.j2 dest={{ php_fpm_dir }}/pool.d/{{ item.name }}.conf
+  with_items: domains
+  sudo: True
+  notify: restart php5
+- name: create app dir
+  file: path={{ item.path }} owner={{ item.user }} group={{ item.user }} recurse=yes state=directory
+  with_items: domains
+  sudo: True
+  notify: restart php5
+- name: create logs dir
+  file: path={{ item.home }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
+  with_items: domains
+  sudo: True
+  notify: restart php5
+- name: touch error.log
+  file: path={{ item.home }}/logs/php_error.log owner={{ item.user }} group={{ item.user }} state=touch
+  with_items: domains
+  sudo: True
+  notify: restart php5
+- name: Create a dummy index file
+  template: src=index.php.j2 dest={{ item.path }}/index.php owner={{ item.user }} group={{ item.user }} 
+  with_items: domains
+  sudo: True
