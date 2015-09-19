@@ -9,6 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
   config.vbguest.auto_update = false
 
+  <<-DOC
   config.vm.define 'db1' do |db|
     db.vm.box = "ubuntu/trusty64"
 
@@ -31,24 +32,44 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     db.vm.network "private_network", ip: "192.168.33.12"
     db.ssh.forward_agent = true
   end
+  DOC
 
-  <<-DOC
   config.vm.define 'web1' do |web|
     web.vm.box = "ubuntu/trusty64"
     # This is for removing autoincrementing ssh ports so it may break in other configurations
-    db.vm.network "forwarded_port", guest: 22, host: 2203, id: "ssh", auto_correct: true 
+    web.vm.network "forwarded_port", guest: 22, host: 2203, id: "ssh", auto_correct: true 
     web.vm.network "private_network", ip: "192.168.32.10"
     web.vm.network "private_network", ip: "192.168.32.11"
     web.vm.network "private_network", ip: "192.168.32.12"
     web.ssh.forward_agent = true
   end
 
+  <<-DOC
+  config.vm.define 'web2' do |web|
+    web.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    web.vm.network "forwarded_port", guest: 22, host: 2204, id: "ssh", auto_correct: true 
+    web.vm.network "private_network", ip: "192.168.32.11"
+    web.ssh.forward_agent = true
+  end
+
+  config.vm.define 'web3' do |web|
+    web.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    web.vm.network "forwarded_port", guest: 22, host: 2205, id: "ssh", auto_correct: true 
+    web.vm.network "private_network", ip: "192.168.32.12"
+    web.ssh.forward_agent = true
+  end
+  DOC
+
   config.vm.define 'nginx1' do |web|
     web.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    web.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh", auto_correct: true 
+
     web.vm.network "private_network", ip: "192.168.31.10"
     web.vm.network "private_network", ip: "192.168.31.11"
     web.vm.network "private_network", ip: "192.168.31.12"
     web.ssh.forward_agent = true
   end
-  DOC
 end

@@ -1,8 +1,18 @@
 ---
-- name: deploy mariadb
-  hosts: db
+#- name: deploy mariadb
+#  hosts: db
+#  roles:
+#    - db
+
+- name: deploy php
+  hosts: web
   roles:
-    - db
-    #    - common
-    #    - phpfpm
+    - common
+    - phpfpm
     #    - nginx
+
+- name: deploy nginx
+  hosts: nginx
+  roles:
+    - common
+    - nginx
