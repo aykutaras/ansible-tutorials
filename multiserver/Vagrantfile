@@ -11,22 +11,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define 'db1' do |db|
     db.vm.box = "ubuntu/trusty64"
+
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    db.vm.network "forwarded_port", guest: 22, host: 2200, id: "ssh", auto_correct: true 
     db.vm.network "private_network", ip: "192.168.33.10"
     db.ssh.forward_agent = true
   end
   config.vm.define 'db2' do |db|
     db.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    db.vm.network "forwarded_port", guest: 22, host: 2201, id: "ssh", auto_correct: true 
     db.vm.network "private_network", ip: "192.168.33.11"
     db.ssh.forward_agent = true
   end
   config.vm.define 'db3' do |db|
     db.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    db.vm.network "forwarded_port", guest: 22, host: 2202, id: "ssh", auto_correct: true 
     db.vm.network "private_network", ip: "192.168.33.12"
     db.ssh.forward_agent = true
   end
 
+  <<-DOC
   config.vm.define 'web1' do |web|
     web.vm.box = "ubuntu/trusty64"
+    # This is for removing autoincrementing ssh ports so it may break in other configurations
+    db.vm.network "forwarded_port", guest: 22, host: 2203, id: "ssh", auto_correct: true 
     web.vm.network "private_network", ip: "192.168.32.10"
     web.vm.network "private_network", ip: "192.168.32.11"
     web.vm.network "private_network", ip: "192.168.32.12"
@@ -40,4 +50,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     web.vm.network "private_network", ip: "192.168.31.12"
     web.ssh.forward_agent = true
   end
+  DOC
 end

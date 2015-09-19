@@ -37,7 +37,7 @@
   when: repl_type == "slave"
   sudo: True
 - name: Setup replication
-  command: /usr/bin/mysql -uroot -e "CHANGE MASTER TO master_host='192.168.33.10', master_user='repl', master_password='lper', master_use_gtid=current_pos"
+  command: /usr/bin/mysql -uroot -e "CHANGE MASTER TO master_host='192.168.33.10', master_user='repl', master_password='lper', master_use_gtid=slave_pos"
   when: repl_type == "slave"
   sudo: True
 - name: start all slaves
