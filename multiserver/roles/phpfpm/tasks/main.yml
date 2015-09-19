@@ -25,6 +25,7 @@
   template: src=php-fpm.conf.j2 dest={{ php_fpm_dir }}/php-fpm.conf
   sudo: True
   notify: restart php5
+
 - name: set host configs
   template: src=www.conf.j2 dest={{ php_fpm_dir }}/pool.d/{{ item.name }}.conf
   with_items: domains

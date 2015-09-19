@@ -1,0 +1,10 @@
+---
+domains: 
+  - name: "192.168.31.11.xip.io"
+    home: "/home/test2"
+    user: "test2"
+    pass: "pass"
+    path: "/home/test2/app/public"
+    db: "test2db"
+    php_host: "192.168.32.11"
+    php_port: "9001"

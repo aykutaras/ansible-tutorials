@@ -44,7 +44,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     web.ssh.forward_agent = true
   end
 
-  <<-DOC
   config.vm.define 'web2' do |web|
     web.vm.box = "ubuntu/trusty64"
     # This is for removing autoincrementing ssh ports so it may break in other configurations
@@ -60,7 +59,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     web.vm.network "private_network", ip: "192.168.32.12"
     web.ssh.forward_agent = true
   end
-  DOC
 
   config.vm.define 'nginx1' do |web|
     web.vm.box = "ubuntu/trusty64"
