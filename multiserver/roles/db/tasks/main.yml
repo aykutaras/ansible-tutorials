@@ -32,15 +32,7 @@
   command: /usr/bin/mysql -u root -e "RESET MASTER"
   when: repl_type == "master"
   sudo: True
-- name: stop all slaves
-  command: /usr/bin/mysql -uroot -e "STOP ALL SLAVES"
-  when: repl_type == "slave"
-  sudo: True
-- name: Setup replication
-  command: /usr/bin/mysql -uroot -e "CHANGE MASTER TO master_host='192.168.33.10', master_user='repl', master_password='lper', master_use_gtid=slave_pos"
-  when: repl_type == "slave"
-  sudo: True
-- name: start all slaves
-  command: /usr/bin/mysql -uroot -e "START ALL SLAVES"
+- name: Setup replication in slave
+  command: /usr/bin/mysql -uroot -e "STOP SLAVE; CHANGE MASTER TO master_host='192.168.33.10', master_user='repl', master_password='lper', master_use_gtid=slave_pos; START SLAVE;"
   when: repl_type == "slave"
   sudo: True

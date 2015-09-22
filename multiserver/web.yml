@@ -7,12 +7,11 @@
 - name: deploy php
   hosts: web
   roles:
-    - common
+  #    - common
     - phpfpm
-    #    - nginx
 
 - name: deploy nginx
   hosts: nginx
   roles:
-    - common
+  #    - common
     - nginx
