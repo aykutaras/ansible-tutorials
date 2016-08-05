@@ -1,0 +1,40 @@
+server {
+    listen 80;
+
+    {% if tls_enabled %}
+    listen 443 ssl;
+    {% endif %}
+
+    server_name {{ item.name }};
+    root {{ item.home }}/app;
+
+    {% if tls_enabled %}
+    ## SSL certificate
+    ssl_certificate /etc/pki/tls/ssl/certs/checkout.clearsettle.com/checkout.clearsettle.com.crt;
+    ssl_certificate_key /etc/pki/tls/ssl/private/checkout.clearsettle.com/checkout.clearsettle.com.key;
+    {% endif %}
+
+    ## Error logging
+    error_log {{ item.home }}/logs/{{ item.name }}.error.log;
+    log_not_found off;
+
+    location / {
+        proxy_pass http://127.0.0.1:{{ item.java_port }}/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Server-Proto $server_protocol;
+    }
+
+    ## Leverage browser caching
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           30d;
+    }
+
+    location  /. { ## Disable .htaccess and other hidden files
+        return 404;
+    }
+}

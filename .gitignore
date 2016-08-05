@@ -3,3 +3,4 @@
 ### Vagrant ###
 .vagrant/
 secrets.yml
+*.retry

@@ -1,0 +1,8 @@
+---
+domains: 
+  - name: "192.168.33.10.xip.io"
+    home: "/home/java"
+    user: "java"
+    pass: "pass"
+    db: "javadb"
+    java_port: "8080"
