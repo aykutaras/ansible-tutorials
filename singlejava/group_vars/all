@@ -6,3 +6,6 @@ domains:
     pass: "pass"
     db: "javadb"
     java_port: "8080"
+    java_xmx: "1024m"
+    java_xms: "1024m"
+    java_perm_size: "512m"

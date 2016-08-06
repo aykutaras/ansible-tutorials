@@ -2,3 +2,15 @@
 - name: Install tomcat8
   become: true
   apt: pkg=tomcat8 update_cache=yes cache_valid_time=3600
+
+- name: set default config
+  template: src=tomcat8.j2 dest=/etc/default/tomcat8
+  with_items: "{{ domains }}"
+  notify: restart tomcat8
+  become: true
+
+- name: set server variables
+  template: src=server.xml.j2 dest=/etc/tomcat8/server.xml
+  with_items: "{{ domains }}"
+  notify: restart tomcat8
+  become: true
