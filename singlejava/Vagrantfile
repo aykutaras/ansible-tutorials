@@ -22,4 +22,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.memory = "2048"
         vb.cpus = 2
     end
+
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get install -y python-simplejson
+    SHELL
 end

@@ -23,10 +23,8 @@
   file: path={{ item.home }}/app/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
   become: True
-  notify: restart java
 
 - name: create logs dir
   file: path={{ item.home }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
   become: True
-  notify: restart java

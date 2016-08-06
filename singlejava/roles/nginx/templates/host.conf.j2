@@ -1,5 +1,5 @@
 upstream tomcat {
-    server 127.0.0.1:{{ item.java_port }} fail_timout=0;
+    server 127.0.0.1:{{ item.java_port }} fail_timeout=0;
 }
 
 server {
@@ -23,7 +23,6 @@ server {
     log_not_found off;
 
     location / {
-        include proxy_params;
         proxy_pass http://tomcat/;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
