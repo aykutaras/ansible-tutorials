@@ -17,8 +17,12 @@
   become: true
 
 - name: assure ssl directory exists
-  file: path=/etc/nginx/ssl state=directory
+  file: path=/etc/nginx/{{ item }} state=directory
   become: true
+  with_items:
+    - ssl
+    - sites-available
+    - sites-enabled
 
 - name: set nginx site config files
   template: src=host.conf.j2 dest=/etc/nginx/sites-available/{{ item.name }}.conf
@@ -27,7 +31,6 @@
   become: true
 
 - name: link nginx site config to sites-enabled
-  file: path=/etc/nginx/vhosts/{{ item.name }}.custom state=touch
   file: src=/etc/nginx/sites-available/{{ item.name }}.conf dest=/etc/nginx/sites-enabled/{{ item.name }}.conf state=link
   with_items: "{{ domains }}"
   notify: restart nginx

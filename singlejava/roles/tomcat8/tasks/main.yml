@@ -1,0 +1,4 @@
+---
+- name: Install tomcat8
+  become: true
+  apt: pkg=tomcat8 update_cache=yes cache_valid_time=3600
