@@ -10,8 +10,8 @@ server {
 
     {% if tls_enabled %}
     ## SSL certificate
-    ssl_certificate /etc/pki/tls/ssl/certs/checkout.clearsettle.com/checkout.clearsettle.com.crt;
-    ssl_certificate_key /etc/pki/tls/ssl/private/checkout.clearsettle.com/checkout.clearsettle.com.key;
+    ssl_certificate /etc/pki/tls/ssl/certs/dummy.crt;
+    ssl_certificate_key /etc/pki/tls/ssl/private/dummy.key;
     {% endif %}
 
     ## Error logging
