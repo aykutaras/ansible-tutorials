@@ -1,0 +1,15 @@
+---
+- name: Install supervisor
+  become: true
+  apt: pkg=supervisor update_cache=yes cache_valid_time=3600
+
+- name: set default config
+  template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf
+  notify: restart supervisor
+  become: true
+
+- name: set server variables
+  template: src=server.xml.j2 dest=/etc/supervisor/server.xml
+  with_items: "{{ domains }}"
+  notify: restart supervisor
+  become: true

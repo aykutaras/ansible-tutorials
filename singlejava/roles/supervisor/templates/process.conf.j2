@@ -1,0 +1,8 @@
+[program:{{ item.name }}]
+command = java -jar {{ item.home }}/app/{{ item.name }}.jar -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xms{{ item.java_xms }} -Xmx{{ item.java_xmx }} -XX:MaxPermSize={{ item.java_perm_size }} -XX:+UseConcMarkSweepGC
+directory = {{ item.home }}/app
+user = {{ item.user }}
+autorestart = true
+startsecs = 0
+numprocs = 1
+process_name = {{ item.name }}-%(process_num)s

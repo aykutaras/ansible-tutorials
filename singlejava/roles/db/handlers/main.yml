@@ -1,4 +1,4 @@
 ---
 - name: restart db
   service: name=mysql state=restarted
-  become: True
+  become: true

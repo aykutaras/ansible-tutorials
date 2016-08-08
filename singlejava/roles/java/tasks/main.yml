@@ -1,19 +1,19 @@
 ---
 - name: Install add-apt-repostory
-  become: True
+  become: true
   apt: name=software-properties-common state=latest
 
 - name: Add Oracle Java Repository
-  become: True
+  become: true
   apt_repository: repo='ppa:webupd8team/java'
 
 - name: Accept Java 8 License
-  become: True
+  become: true
   debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
 - name: install java8
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
-  become: True
+  become: true
   with_items:
     - oracle-java8-installer
     - ca-certificates
@@ -22,9 +22,9 @@
 - name: create app dir
   file: path={{ item.home }}/app/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
-  become: True
+  become: true
 
 - name: create logs dir
   file: path={{ item.home }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
-  become: True
+  become: true

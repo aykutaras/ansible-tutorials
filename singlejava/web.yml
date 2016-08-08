@@ -6,3 +6,5 @@
     - java
     - nginx
     - tomcat8
+    - db
+    - supervisor
