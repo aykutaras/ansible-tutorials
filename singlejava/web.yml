@@ -1,5 +1,5 @@
 ---
-- name: deploy a php app
+- name: deploy a java app
   hosts: vagrant
   roles:
     - common

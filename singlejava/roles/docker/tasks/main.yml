@@ -1,0 +1,4 @@
+---
+- name: ensure docker to apt-key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  become: true
