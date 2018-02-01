@@ -1,10 +1,7 @@
 ---
 - name: deploy a java app
-  hosts: vagrant
+  hosts: aws
   roles:
-    - common
     - java
     - nginx
-    - tomcat8
-    - db
     - supervisor

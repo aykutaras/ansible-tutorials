@@ -9,7 +9,7 @@
   become: true
 
 - name: set server variables
-  template: src=server.xml.j2 dest=/etc/supervisor/server.xml
+  template: src=process.conf.j2 dest=/etc/supervisor/conf.d/{{ item.name }}.conf
   with_items: "{{ domains }}"
   notify: restart supervisor
   become: true

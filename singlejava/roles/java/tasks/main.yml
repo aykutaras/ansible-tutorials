@@ -20,11 +20,11 @@
     - oracle-java8-set-default
 
 - name: create app dir
-  file: path={{ item.home }}/app/ owner={{ item.user }} group={{ item.user }} state=directory
+  file: path={{ item.home }}/{{ item.name }}/app/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
   become: true
 
 - name: create logs dir
-  file: path={{ item.home }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
+  file: path={{ item.home }}/{{ item.name }}/logs/ owner={{ item.user }} group={{ item.user }} state=directory
   with_items: "{{ domains }}"
   become: true

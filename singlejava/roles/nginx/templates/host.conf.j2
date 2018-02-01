@@ -10,7 +10,7 @@ server {
     {% endif %}
 
     server_name {{ item.name }};
-    root {{ item.home }}/app;
+    root {{ item.home }}/{{ item.name }}/app;
 
     {% if tls_enabled %}
     ## SSL certificate
@@ -19,7 +19,7 @@ server {
     {% endif %}
 
     ## Error logging
-    error_log {{ item.home }}/logs/{{ item.name }}.error.log;
+    error_log {{ item.home }}/{{ item.name }}/logs/{{ item.name }}.error.log;
     log_not_found off;
 
     location / {

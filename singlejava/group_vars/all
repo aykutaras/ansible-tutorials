@@ -1,10 +1,8 @@
 ---
 domains: 
-  - name: "192.168.33.10.xip.io"
-    home: "/home/java"
-    user: "java"
-    pass: "pass"
-    db: "javadb"
+  - name: "singlejava.domain.com"
+    home: "/home/ubuntu"
+    user: "ubuntu"
     java_port: "8080"
     java_xmx: "1024m"
     java_xms: "1024m"
